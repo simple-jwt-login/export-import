@@ -16,7 +16,7 @@ if (!empty($_POST) && isset($_POST['action']) && isset($_POST['_wpnonce'])) {
     $result = $wordPressData
         ->checkNonce($_POST['_wpnonce'], WordPressData::NONCE_NAME);
     if ($result === false) {
-        $error = 'Something is wrong.';
+        $error = __('Something is wrong.', 'simple-jwt-login-export-import');
         $success = null;
         $value = '';
     } else {
@@ -26,12 +26,12 @@ if (!empty($_POST) && isset($_POST['action']) && isset($_POST['_wpnonce'])) {
                 if (isset($_POST['settings'])) {
                     $settings = base64_decode(esc_html($_POST['settings']));
                     if ($settings === false) {
-                        $error = 'Invalid import settings';
+                        $error = __('Invalid import settings', 'simple-jwt-login-export-import');
                         break;
                     }
                     $array = json_decode($settings, true);
                     if (!is_array($array)) {
-                        $error = 'Invalid import settings.';
+                        $error = __('Invalid import settings.', 'simple-jwt-login-export-import');
                         break;
                     }
 
@@ -39,12 +39,12 @@ if (!empty($_POST) && isset($_POST['action']) && isset($_POST['_wpnonce'])) {
 
                     if ($needUpdate) {
                         $wordPressData->updateOption(SimpleJWTLoginSettings::OPTIONS_KEY, $settings);
-                        $success = 'Settings has been imported.';
+                        $success = __('Settings has been imported.', 'simple-jwt-login-export-import');
                         break;
                     }
 
                     $wordPressData->addOption(SimpleJWTLoginSettings::OPTIONS_KEY, $settings);
-                    $success = 'Settings has been imported.';
+                    $success = __('Settings has been imported.', 'simple-jwt-login-export-import');
                     break;
                 }
                 break;
@@ -52,7 +52,10 @@ if (!empty($_POST) && isset($_POST['action']) && isset($_POST['_wpnonce'])) {
             case 'export':
                 $dbData = $wordPressData->getOptionFromDatabase(SimpleJWTLoginSettings::OPTIONS_KEY);
                 if (empty($dbData)) {
-                    $error = 'You don\'t  have settings saved for Simple-JWT-Login plugin.';
+                    $error = __(
+                            'You don\'t  have settings saved for Simple-JWT-Login plugin.',
+                            'simple-jwt-login-export-import'
+                    );
                     break;
                 }
                 $value = base64_encode($dbData);
@@ -83,7 +86,7 @@ if (!empty($_POST) && isset($_POST['action']) && isset($_POST['_wpnonce'])) {
     ?>
     <div class="row">
         <div class="col-md-12">
-            <h1><?php echo __('Export/Import Settings ', 'simple-jwt-login-export-import'); ?></h1>
+            <h1><?php echo __('Export/Import Settings ', 'simple-jwt-login-export-import'); ?><span class="beta">beta</span></h1>
         </div>
     </div>
     <form method="POST">
@@ -101,7 +104,7 @@ if (!empty($_POST) && isset($_POST['action']) && isset($_POST['_wpnonce'])) {
 
         <div class="row">
             <div class="col-md-12">
-                <label for="settings-response"><b>Response:</b></label>
+                <label for="settings-response"><b><?php echo __('Response', 'simple-jwt-login-export-import');?>:</b></label>
                 <textarea
                         id="settings-response"
                         rows="20"
