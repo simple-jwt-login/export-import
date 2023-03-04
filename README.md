@@ -22,6 +22,12 @@ or
 2. Search for 'Simple-JWT-Login-Export-Import' and select 'Install Now'
 3. Activate the plugin when prompted
 
+## Screenshot
+
+<p align="center">
+    <img src="https://github.com/simple-jwt-login/export-import/blob/master/wordpress.org/screenshot-1.png?raw=true" alt="Simple-JWT-Login Export-Import" />
+</p>
+
 ## Copyright
 
 This project is distributed under the [GNU General Public License v3.0](https://github.com/simple-jwt-login/export-import/blob/master/LICENSE).
