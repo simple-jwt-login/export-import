@@ -1,5 +1,3 @@
-
-
 <?php
 /*
     Plugin Name: Simple-JWT-Login-Export-Import
@@ -35,6 +33,7 @@ function simple_jwt_login_export_import_plugin_create_menu_entry()
         'simple_jwt_login_export_import_function'
     );
 }
+
 function check_import_export_simple_jwt_login_activated()
 {
     return in_array(

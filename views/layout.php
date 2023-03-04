@@ -87,7 +87,8 @@ if (!empty($_POST) && isset($_POST['action']) && isset($_POST['_wpnonce'])) {
         ?>
         <div class="row">
             <div class="col-md-12">
-                <input type="submit" name="action" value="import" class="btn btn-dark" onclick="return simple_jwt_login_export_import_confirm()"/>
+                <input type="submit" name="action" value="import" class="btn btn-dark"
+                       onclick="return simple_jwt_login_export_import_confirm()"/>
                 <input type="submit" name="action" value="export" class="btn btn-dark"/>
             </div>
         </div>
