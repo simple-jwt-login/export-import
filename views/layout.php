@@ -50,13 +50,18 @@ if (!empty($_POST) && isset($_POST['action']) && isset($_POST['_wpnonce'])) {
                 break;
 
             case 'export':
-                $value = base64_encode($wordPressData->getOptionFromDatabase(SimpleJWTLoginSettings::OPTIONS_KEY));
+                $dbData = $wordPressData->getOptionFromDatabase(SimpleJWTLoginSettings::OPTIONS_KEY);
+                if (empty($dbData)) {
+                    $error = 'You don\'t  have settings saved for Simple-JWT-Login plugin.';
+                    break;
+                }
+                $value = base64_encode($dbData);
                 break;
         }
     }
 }
 ?>
-<div id="simple-jwt-login-export-import">
+<div id="simple-jwt-login-export-import" class="container-fluid">
     <?php
     if ($success !== null || $error !== null) {
 
@@ -96,7 +101,7 @@ if (!empty($_POST) && isset($_POST['action']) && isset($_POST['_wpnonce'])) {
 
         <div class="row">
             <div class="col-md-12">
-                <label for="settings-response">Response:</label>
+                <label for="settings-response"><b>Response:</b></label>
                 <textarea
                         id="settings-response"
                         rows="20"
