@@ -17,35 +17,33 @@ if (!empty($_POST) && isset($_POST['action']) && isset($_POST['_wpnonce'])) {
         ->checkNonce($_POST['_wpnonce'], WordPressData::NONCE_NAME);
     if ($result === false) {
         $error = __('Something is wrong.', 'simple-jwt-login-export-import');
-        $success = null;
-        $value = '';
     } else {
-        $action = esc_html($_POST['action']);
+        $action = sanitize_text_field($_POST['action']);
         switch ($action) {
             case "import":
                 if (isset($_POST['settings'])) {
-                    $settings = base64_decode(esc_html($_POST['settings']));
-                    if ($settings === false) {
-                        $error = __('Invalid import settings', 'simple-jwt-login-export-import');
-                        break;
-                    }
-                    $array = json_decode($settings, true);
-                    if (!is_array($array)) {
+                    $settingsArray = json_decode(stripslashes($_POST['settings']), true);
+                    if (!is_array($settingsArray)) {
                         $error = __('Invalid import settings.', 'simple-jwt-login-export-import');
                         break;
                     }
 
+                    $settings = json_encode($settingsArray);
                     $needUpdate = $wordPressData->getOptionFromDatabase(SimpleJWTLoginSettings::OPTIONS_KEY) !== false;
 
                     if ($needUpdate) {
-                        $wordPressData->updateOption(SimpleJWTLoginSettings::OPTIONS_KEY, $settings);
-                        $success = __('Settings has been imported.', 'simple-jwt-login-export-import');
-                        break;
+                        $wordPressData->updateOption(
+                            SimpleJWTLoginSettings::OPTIONS_KEY,
+                            sanitize_text_field($settings)
+                        );
+                    } else {
+                        $wordPressData->addOption(
+                            SimpleJWTLoginSettings::OPTIONS_KEY,
+                            sanitize_text_field($settings)
+                        );
                     }
 
-                    $wordPressData->addOption(SimpleJWTLoginSettings::OPTIONS_KEY, $settings);
                     $success = __('Settings has been imported.', 'simple-jwt-login-export-import');
-                    break;
                 }
                 break;
 
@@ -53,12 +51,12 @@ if (!empty($_POST) && isset($_POST['action']) && isset($_POST['_wpnonce'])) {
                 $dbData = $wordPressData->getOptionFromDatabase(SimpleJWTLoginSettings::OPTIONS_KEY);
                 if (empty($dbData)) {
                     $error = __(
-                            'You don\'t  have settings saved for Simple-JWT-Login plugin.',
-                            'simple-jwt-login-export-import'
+                        'You don\'t  have settings saved for Simple-JWT-Login plugin.',
+                        'simple-jwt-login-export-import'
                     );
                     break;
                 }
-                $value = base64_encode($dbData);
+                $value = esc_html($dbData);
                 break;
         }
     }
@@ -86,7 +84,8 @@ if (!empty($_POST) && isset($_POST['action']) && isset($_POST['_wpnonce'])) {
     ?>
     <div class="row">
         <div class="col-md-12">
-            <h1><?php echo __('Export/Import Settings ', 'simple-jwt-login-export-import'); ?><span class="beta">beta</span></h1>
+            <h1><?php echo __('Export/Import Settings ', 'simple-jwt-login-export-import'); ?><span
+                        class="beta">beta</span></h1>
         </div>
     </div>
     <form method="POST">
@@ -104,7 +103,8 @@ if (!empty($_POST) && isset($_POST['action']) && isset($_POST['_wpnonce'])) {
 
         <div class="row">
             <div class="col-md-12">
-                <label for="settings-response"><b><?php echo __('Response', 'simple-jwt-login-export-import');?>:</b></label>
+                <label for="settings-response"><b><?php echo __('Response', 'simple-jwt-login-export-import'); ?>
+                        :</b></label>
                 <textarea
                         id="settings-response"
                         rows="20"
