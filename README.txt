@@ -6,7 +6,7 @@ Tags: jwt, API, auto login, tokens, REST, auth, generate jwt
 Requires at least: 4.4.0
 Tested up to: 6.1
 Requires PHP: 5.6
-Stable tag: 0.2.0
+Stable tag: 0.3.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -39,6 +39,9 @@ or
 3. Activate the plugin when prompted
 
 == Changelog ==
+
+= 0.3.0 ( 15 Mar 2023) =
+- Sanitize text
 
 = 0.2.0 ( 12 Mar 2023) =
 - Display JSON instead of encoded string

@@ -28,18 +28,20 @@ if (!empty($_POST) && isset($_POST['action']) && isset($_POST['_wpnonce'])) {
                         break;
                     }
 
-                    $settings = json_encode($settingsArray);
+                    $settings = json_encode(
+                        simple_jwt_login_export_import_sanitize($settingsArray)
+                    );
                     $needUpdate = $wordPressData->getOptionFromDatabase(SimpleJWTLoginSettings::OPTIONS_KEY) !== false;
 
                     if ($needUpdate) {
                         $wordPressData->updateOption(
                             SimpleJWTLoginSettings::OPTIONS_KEY,
-                            sanitize_text_field($settings)
+                            $settings
                         );
                     } else {
                         $wordPressData->addOption(
                             SimpleJWTLoginSettings::OPTIONS_KEY,
-                            sanitize_text_field($settings)
+                            $settings
                         );
                     }
 

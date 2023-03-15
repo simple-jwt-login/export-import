@@ -7,7 +7,7 @@
     Author URI: https://profiles.wordpress.org/nicu_m/
     Text Domain: simple-jwt-login-export-import
     Domain Path: /i18n
-    Version: 0.2.0
+    Version: 0.3.0
 */
 
 add_action('admin_menu', 'simple_jwt_login_export_import_plugin_create_menu_entry', 11);
@@ -86,5 +86,6 @@ function simple_jwt_login_export_import_function()
         $loadScriptsInFooter
     );
 
+    include_once 'helpers.php';
     include_once 'views/layout.php';
 }
